@@ -13,10 +13,10 @@ console.log("Successfully connected to Firestore");
 
 // --- commands
 bot.command("start", async (ctx) => {
-  console.log(await checkAndCreateUser(ctx));
+  const user = await checkAndCreateUser(ctx);
   bot.telegram.sendMessage(
     ctx.chat.id,
-    "Yo moin, willkommen beim Pizza Tuesday Bot!",
+    `Yo moin, ${user.first_name}! Willkommen beim Pizza Tuesday Bot!`,
     {}
   );
 });
@@ -24,16 +24,22 @@ bot.command("start", async (ctx) => {
 const checkAndCreateUser = async (ctx) => {
   const id = ctx.from.id;
 
+  // collection and document references
   const collection = db.collection(process.env.FIRESTORE_USER_COLLECTION);
   const doc = collection.doc(id.toString());
 
   try {
-    const response = await doc.get();
+    const response = await doc.get(); // try reading from database
 
     if (response.exists) {
-      return "User already exists.";
+      // document exists -> return document data
+      const data = response.data();
+      return data;
     } else {
-      return "User does not yet exist.";
+      // document does not exist -> create and return data
+      delete ctx.from.id; // id is not necessary at this point
+      doc.set(ctx.from);
+      return ctx.from;
     }
   } catch (err) {
     console.error(err);
