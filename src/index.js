@@ -6,7 +6,14 @@ require("firebase-admin/firestore");
 require("dotenv").config();
 const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
 console.log("Successfully connected to Telegram API");
-admin.initializeApp();
+admin.initializeApp({
+  credential: admin.credential.cert({
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    // replace `\` and `n` character pairs w/ single `\n` character
+    privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+  }),
+});
 console.log("Successfully connected to Firebase");
 const db = admin.firestore();
 console.log("Successfully connected to Firestore");

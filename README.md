@@ -25,9 +25,9 @@ You could also create a second bot using the BotFather as a development bot. In 
 2. Create a **Firestore** database
 3. Go to **Settings** > **Service Accounts**
 4. Generate a new **private key**
-5. Copy the .json file into the **root directory** of this project
-6. Rename the file to `service-account-file.json`
-7. Enter the path from root to the file in the environment variable `GOOGLE_APPLICATION_CREDENTIALS` in the .env file
+5. Copy the value of `project_id` in this file to `FIREBASE_PROJECT_ID` in `.env`
+6. Copy the value of `client_email` in this file to `FIREBASE_CLIENT_EMAIL` in `.env`
+7. Copy the value of `private_key` in this file to `FIREBASE_PRIVATE_KEY` in `.env`
 
 ### Remaining environment variables
 
