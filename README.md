@@ -29,6 +29,10 @@ You could also create a second bot using the BotFather as a development bot. In 
 6. Rename the file to `service-account-file.json`
 7. Enter the path from root to the file in the environment variable `GOOGLE_APPLICATION_CREDENTIALS` in the .env file
 
+### Remaining environment variables
+
+1. Set `FIRESTORE_USER_COLLECTION` to the name of the collection in Firebase Firestore that will store all user entries. (e.g. `users`).
+
 ---
 
 ## Execution
