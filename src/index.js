@@ -1,5 +1,6 @@
 const { Telegraf } = require("telegraf");
 const admin = require("firebase-admin");
+const { getFirestore } = require("firebase-admin/firestore");
 require("firebase-admin/firestore");
 
 // --- initialization
@@ -11,11 +12,11 @@ admin.initializeApp({
     projectId: process.env.FIREBASE_PROJECT_ID,
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
     // replace `\` and `n` character pairs w/ single `\n` character
-    privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
   }),
 });
 console.log("Successfully connected to Firebase");
-const db = admin.firestore();
+const db = getFirestore();
 console.log("Successfully connected to Firestore");
 
 // --- commands

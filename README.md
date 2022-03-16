@@ -15,7 +15,7 @@ To run the project locally / in your own environt, you need to set up a few thin
 1. Follow the instructions on [creating a new bot using the BotFather](https://core.telegram.org/bots#6-botfather).
 2. Store the api key safely
 3. Rename `.example.env` to `.env`
-4. Enter the previously saved Token into the `TELEGRAM_TOKEN` variable
+4. Enter the previously saved token into the `TELEGRAM_TOKEN` variable
 
 You could also create a second bot using the BotFather as a development bot. In this case, the production bot would run online (e.g. on [Heroku](https://heroku.com)) using the initial token. While you can develop and test new features using the development token.
 
