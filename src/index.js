@@ -1,8 +1,14 @@
 const { Telegraf } = require("telegraf");
+const { initializeApp } = require("firebase-admin/app");
+
+// --- initialization
 require("dotenv").config();
+const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
+console.log("Successfully connected to Telegram API");
+const app = initializeApp();
+console.log("Successfully connected to Firebase");
 
-const bot = new Telegraf(process.env.TOKEN);
-
+// --- commands
 bot.command("start", (ctx) => {
   console.log(ctx.from);
   bot.telegram.sendMessage(
@@ -12,6 +18,7 @@ bot.command("start", (ctx) => {
   );
 });
 
+// --- processing
 bot.launch();
 
 process.once("SIGINT", () => bot.stop("SIGINT"));
