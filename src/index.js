@@ -1,7 +1,9 @@
-const { Telegraf } = require("telegraf");
+const { Telegraf, Scenes, session } = require("telegraf");
 const admin = require("firebase-admin");
 const { getFirestore } = require("firebase-admin/firestore");
 require("firebase-admin/firestore");
+// scenes
+const orderWizard = require("./scenes/orderWizard");
 
 // --- initialization
 require("dotenv").config();
@@ -17,6 +19,9 @@ admin.initializeApp({
 console.log("Successfully connected to Firebase Admin");
 const db = getFirestore();
 console.log("Successfully connected to Firestore Firestore");
+const stage = new Scenes.Stage([orderWizard]);
+bot.use(session());
+bot.use(stage.middleware());
 
 // --- commands
 bot.command("start", async (ctx) => {
@@ -28,6 +33,11 @@ bot.command("start", async (ctx) => {
   );
 });
 
+bot.command("hunger", async (ctx) => {
+  await ctx.scene.enter("ORDER_WIZARD_SCENE_ID");
+});
+
+// --- helper functions
 const checkAndCreateUser = async (ctx) => {
   const id = ctx.from.id;
 
