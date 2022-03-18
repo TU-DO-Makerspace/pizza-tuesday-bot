@@ -31,7 +31,7 @@ You could also create a second bot using the BotFather as a development bot. In 
 
 ### Remaining environment variables
 
-1. Set `FIRESTORE_USER_COLLECTION` to the name of the collection in Firebase Firestore that will store all user entries. (e.g. `users`).
+1. Set `FIRESTORE_USER_COLLECTION` to the name of the collection in Firebase Firestore that will store all user entries. (e.g. `users`). To separate your development database from your production database, you could simply use a different collection name in your local environment variables, such as `dev-users`.
 
 ---
 

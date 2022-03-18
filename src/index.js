@@ -11,13 +11,12 @@ admin.initializeApp({
   credential: admin.credential.cert({
     projectId: process.env.FIREBASE_PROJECT_ID,
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    // replace `\` and `n` character pairs w/ single `\n` character
-    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"), // replace `\` and `n` character pairs w/ single `\n` character
   }),
 });
-console.log("Successfully connected to Firebase");
+console.log("Successfully connected to Firebase Admin");
 const db = getFirestore();
-console.log("Successfully connected to Firestore");
+console.log("Successfully connected to Firestore Firestore");
 
 // --- commands
 bot.command("start", async (ctx) => {
@@ -39,12 +38,13 @@ const checkAndCreateUser = async (ctx) => {
   try {
     const response = await doc.get(); // try reading from database
 
+    // document exists -> return document data
     if (response.exists) {
-      // document exists -> return document data
       const data = response.data();
       return data;
-    } else {
-      // document does not exist -> create and return data
+    }
+    // document does not exist -> create and return data
+    else {
       delete ctx.from.id; // id is not necessary at this point
       doc.set(ctx.from);
       return ctx.from;
@@ -56,6 +56,6 @@ const checkAndCreateUser = async (ctx) => {
 
 // --- processing
 bot.launch();
-
+// gracefully stop bot
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));
