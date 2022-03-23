@@ -3,7 +3,7 @@ const admin = require("firebase-admin");
 const { getFirestore } = require("firebase-admin/firestore");
 require("firebase-admin/firestore");
 // scenes
-const orderWizard = require("./scenes/orderWizard");
+const orderWizard = require("./scenes/order-wizard");
 
 // --- initialization
 require("dotenv").config();
