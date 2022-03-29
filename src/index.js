@@ -20,8 +20,6 @@ bot.command("hunger", async (ctx) => {
   await ctx.scene.enter("ORDER_WIZARD_SCENE_ID");
 });
 
-// --- helper functions
-
 // --- processing
 bot.launch();
 // gracefully stop bot
