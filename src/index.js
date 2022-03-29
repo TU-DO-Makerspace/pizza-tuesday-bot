@@ -8,6 +8,8 @@ const adminCommands = require("./commands/admin");
 
 // --- initialization
 const bot = initBot();
+
+// --- commands
 bot.use(generalCommands, adminCommands);
 
 // --- processing

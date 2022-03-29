@@ -1,5 +1,5 @@
+// --- services
 const { createOrder } = require("../../services/orders");
-const { adminOrderNotification } = require("../../services/notifications");
 
 const orderConfirmation = async (ctx) => {
   // get input

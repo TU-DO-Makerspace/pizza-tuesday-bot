@@ -1,3 +1,4 @@
+// --- helpers
 const { priceFormatter } = require("./price-formatter");
 
 const generateOrderString = (order, options) => {

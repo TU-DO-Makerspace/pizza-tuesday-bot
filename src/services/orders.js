@@ -3,10 +3,11 @@ const { getFirestore, Timestamp } = require("firebase-admin/firestore");
 const { adminOrderNotification } = require("./notifications");
 
 const createOrder = async (ctx, order, options) => {
+  // define collection instance
   const db = getFirestore();
-
   const collection = db.collection(process.env.FIRESTORE_ORDER_COLLECTION);
 
+  // generate initial order object
   const orderObject = {
     from: ctx.from.id,
     order: order.items,
@@ -18,7 +19,10 @@ const createOrder = async (ctx, order, options) => {
   };
 
   try {
+    // create order
     await collection.add(orderObject);
+
+    // notify admins
     return await adminOrderNotification(ctx, order, options);
   } catch (err) {
     throw error;
