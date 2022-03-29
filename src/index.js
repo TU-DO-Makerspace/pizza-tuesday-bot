@@ -3,21 +3,30 @@ require("dotenv").config();
 const initBot = require("./init-bot");
 // --- helpers
 const checkAndCreateUser = require("./helpers/check-and-create-user");
+const handleError = require("./helpers/errors");
 // --- initialization
 const bot = initBot();
 
 // --- commands
 bot.command("start", async (ctx) => {
-  const user = await checkAndCreateUser(ctx);
-  bot.telegram.sendMessage(
-    ctx.chat.id,
-    `Yo moin, ${user.first_name}! Willkommen beim Pizza Tuesday Bot!`,
-    {}
-  );
+  try {
+    const user = await checkAndCreateUser(ctx);
+    bot.telegram.sendMessage(
+      ctx.chat.id,
+      `Yo moin, ${user.first_name}! Willkommen beim Pizza Tuesday Bot!`,
+      {}
+    );
+  } catch (err) {
+    handleError(err, bot, ctx);
+  }
 });
 
 bot.command("hunger", async (ctx) => {
-  await ctx.scene.enter("ORDER_WIZARD_SCENE_ID");
+  try {
+    await ctx.scene.enter("ORDER_WIZARD_SCENE_ID");
+  } catch (err) {
+    handleError(err, bot, ctx);
+  }
 });
 
 // --- processing
