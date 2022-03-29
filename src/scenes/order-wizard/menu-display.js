@@ -1,6 +1,7 @@
+// --- services
+const { generateMenuString } = require("../../services/menus");
 // --- helpers
 const { generateOrderString } = require("../../helpers/generate-order-string");
-const { generateMenuString } = require("../../helpers/menus");
 
 const menuDisplay = async (ctx) => {
   const stringPrefix = "Was darf's denn sein? Wir haben heute:";

@@ -1,5 +1,5 @@
-const { createOrder } = require("../../helpers/orders");
-const { adminOrderNotification } = require("../../helpers/notifications");
+// --- services
+const { createOrder } = require("../../services/orders");
 
 const orderConfirmation = async (ctx) => {
   // get input
@@ -34,12 +34,7 @@ const orderConfirmation = async (ctx) => {
     } und nochmal eine, wenn sie fertig ist.`
   );
 
-  await createOrder(ctx, ctx.session.order);
-  await adminOrderNotification(
-    ctx.scene.state.bot,
-    ctx.session.order,
-    ctx.scene.state.options
-  );
+  await createOrder(ctx, ctx.session.order, ctx.scene.state.options);
   return ctx.scene.leave();
 };
 
