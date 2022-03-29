@@ -35,11 +35,7 @@ const orderConfirmation = async (ctx) => {
   );
 
   await createOrder(ctx, ctx.session.order);
-  await adminOrderNotification(
-    ctx.scene.state.bot,
-    ctx.session.order,
-    ctx.scene.state.options
-  );
+  await adminOrderNotification(ctx, ctx.session.order, ctx.scene.state.options);
   return ctx.scene.leave();
 };
 

@@ -1,13 +1,13 @@
 const { adminErrorNotification } = require("./notifications");
 
-const handleError = async (err, bot, ctx, command) => {
+const handleError = async (err, ctx, command) => {
   console.log(err);
-  bot.telegram.sendMessage(
+  ctx.telegram.sendMessage(
     ctx.chat.id,
     `Da scheint wohl etwas schiefgelaufen zu sein, der Bot konnte die Anfrage leider nicht verarbeiten. Bitte versuche es später noch einmal.`,
     {}
   );
-  await adminErrorNotification(bot, err, command);
+  await adminErrorNotification(ctx, err, command);
 };
 
 module.exports = handleError;

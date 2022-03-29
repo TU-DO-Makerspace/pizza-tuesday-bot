@@ -18,7 +18,7 @@ const checkAdmin = async (ctx, bot) => {
       return data;
     }
 
-    bot.telegram.sendMessage(
+    ctx.telegram.sendMessage(
       ctx.chat.id,
       "Dein Account hat nicht die benötigten Privilegien für diese Aktion.",
       {}
