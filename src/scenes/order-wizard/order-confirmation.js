@@ -1,4 +1,5 @@
 const { createOrder } = require("../../helpers/orders");
+const { adminOrderNotification } = require("../../helpers/notifications");
 
 const orderConfirmation = async (ctx) => {
   // get input
@@ -34,6 +35,11 @@ const orderConfirmation = async (ctx) => {
   );
 
   await createOrder(ctx, ctx.session.order);
+  await adminOrderNotification(
+    ctx.scene.state.bot,
+    ctx.session.order,
+    ctx.scene.state.options
+  );
   return ctx.scene.leave();
 };
 

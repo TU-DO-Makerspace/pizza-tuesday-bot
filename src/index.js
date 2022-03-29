@@ -5,6 +5,7 @@ const initBot = require("./init-bot");
 const checkAndCreateUser = require("./helpers/check-and-create-user");
 const checkAdmin = require("./helpers/check-admin");
 const handleError = require("./helpers/errors");
+const { getMenu, generateMenuString } = require("./helpers/menus");
 // --- initialization
 const bot = initBot();
 
@@ -18,15 +19,25 @@ bot.command("start", async (ctx) => {
       {}
     );
   } catch (err) {
-    handleError(err, bot, ctx);
+    handleError(err, bot, ctx, "start");
   }
 });
 
 bot.command("hunger", async (ctx) => {
   try {
-    await ctx.scene.enter("ORDER_WIZARD_SCENE_ID");
+    const menu = await getMenu();
+    if (!menu)
+      return bot.telegram.sendMessage(
+        ctx.chat.id,
+        "Aktuell ist noch kein Menü für den nächsten Pizza Tuesday verfügbar. Bestellungen können leider noch nicht aufgegeben werden."
+      );
+
+    await ctx.scene.enter("ORDER_WIZARD_SCENE_ID", {
+      bot,
+      options: menu.options,
+    });
   } catch (err) {
-    handleError(err, bot, ctx);
+    handleError(err, bot, ctx, "hunger");
   }
 });
 
@@ -37,7 +48,24 @@ bot.command("admin", async (ctx) => {
 
     bot.telegram.sendMessage(ctx.chat.id, `Du bist ein Admin!`, {});
   } catch (err) {
-    handleError(err, bot, ctx);
+    handleError(err, bot, ctx, "admin");
+  }
+});
+
+bot.command("menu", async (ctx) => {
+  try {
+    const menu = await getMenu();
+    if (!menu)
+      return bot.telegram.sendMessage(
+        ctx.chat.id,
+        "Aktuell ist noch kein Menü für den nächsten Pizza Tuesday verfügbar. Auch bestellungen können leider noch nicht aufgegeben werden."
+      );
+    const menuString = generateMenuString(menu.options);
+    bot.telegram.sendMessage(ctx.chat.id, menuString, {
+      parse_mode: "MarkdownV2",
+    });
+  } catch (err) {
+    handleError(err, bot, ctx, "menu");
   }
 });
 
