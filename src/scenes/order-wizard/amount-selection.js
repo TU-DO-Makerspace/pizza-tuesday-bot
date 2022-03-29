@@ -1,6 +1,6 @@
 const { generateOrderString } = require("../../helpers/generate-order-string");
 
-const amountSelection = async (ctx, options) => {
+const amountSelection = async (ctx) => {
   // get input
   const response = ctx.message.text;
   let amount = parseInt(response);
@@ -26,7 +26,7 @@ const amountSelection = async (ctx, options) => {
   // update order
   const lastPizzaIndex = ctx.session.order.items.length - 1;
   const lastPizza = ctx.session.order.items[lastPizzaIndex];
-  const pizza = options[lastPizza.id];
+  const pizza = ctx.scene.state.options[lastPizza.id];
 
   // amount = 0
   if (
@@ -51,7 +51,7 @@ const amountSelection = async (ctx, options) => {
     }Darf es noch etwas sein?\n\n*1: Das war's \\- Schmeiß den Pizzaofen an\\!*\n*2: Mehr\\! Ich hab Hunger\\!*\n\n*0: Bestellvorgang abbrechen*\n\nTippe zum Bestellen einfach die entsprechende Nummer ein\\.`
   );
   await ctx.replyWithMarkdownV2(
-    generateOrderString(ctx.session.order, options)
+    generateOrderString(ctx.session.order, ctx.scene.state.options)
   );
 
   return ctx.wizard.next();

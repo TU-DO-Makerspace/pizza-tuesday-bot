@@ -1,4 +1,4 @@
-const menuSelection = async (ctx, options) => {
+const menuSelection = async (ctx) => {
   // get input
   const response = ctx.message.text;
 
@@ -15,7 +15,7 @@ const menuSelection = async (ctx, options) => {
       "Deine Eingabe ist ungültig. Bitte gib nur die Nummer ein und versuche es erneut."
     );
     return;
-  } else if (id < 0 || id > options.length) {
+  } else if (id < 0 || id > ctx.scene.state.options.length) {
     await ctx.reply(
       `Die Nummer ${id} existiert leider nicht. Schaue noch einmal aufs Menü und versuche es erneut.`
     );
@@ -29,7 +29,7 @@ const menuSelection = async (ctx, options) => {
   ctx.session.order.items.push({ id: id - 1, amount: 0 });
 
   // respond
-  const answer = options[id - 1];
+  const answer = ctx.scene.state.options[id - 1];
   await ctx.replyWithMarkdownV2(
     `Du möchtest *${answer.title}* bestellen? Wie viele möchtest du denn? \n _\\(Wenn du dich verwählt hast, gib einfach 0 ein\\)_`
   );
