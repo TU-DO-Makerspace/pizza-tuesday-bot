@@ -24,7 +24,7 @@ bot.command("start", async (ctx) => {
 
 bot.command("hunger", async (ctx) => {
   try {
-    await ctx.scene.enter("ORDER_WIZARD_SCENE_ID");
+    await ctx.scene.enter("ORDER_WIZARD_SCENE_ID", { bot });
   } catch (err) {
     handleError(err, bot, ctx);
   }

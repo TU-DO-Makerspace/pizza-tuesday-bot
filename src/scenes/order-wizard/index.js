@@ -30,7 +30,7 @@ const orderWizard = new Scenes.WizardScene(
   async (ctx) => await menuDisplay(ctx, options),
   async (ctx) => await menuSelection(ctx, options),
   async (ctx) => await amountSelection(ctx, options),
-  async (ctx) => await orderConfirmation(ctx)
+  async (ctx) => await orderConfirmation(ctx, ctx.scene.state.bot, options)
 );
 
 module.exports = orderWizard;
