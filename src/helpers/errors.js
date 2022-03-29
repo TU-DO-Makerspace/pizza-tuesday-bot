@@ -1,4 +1,4 @@
-const { adminErrorNotification } = require("./notifications");
+const { adminErrorNotification } = require("../services/notifications");
 
 const handleError = async (err, ctx, command) => {
   console.log(err);

@@ -1,6 +1,6 @@
 // --- imports
 const { getFirestore } = require("firebase-admin/firestore");
-const { generateOrderString } = require("./generate-order-string");
+const { generateOrderString } = require("../helpers/generate-order-string");
 
 const adminOrderNotification = async (ctx, order, options) => {
   try {

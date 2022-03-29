@@ -2,7 +2,7 @@
 const { getFirestore } = require("firebase-admin/firestore");
 
 // --- helpers
-const { priceFormatter } = require("./price-formatter");
+const { priceFormatter } = require("../helpers/price-formatter");
 
 const getMenu = async () => {
   try {

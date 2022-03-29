@@ -5,7 +5,7 @@ const { Composer } = require("telegraf");
 const checkAdmin = require("../helpers/check-admin");
 const handleError = require("../helpers/errors");
 
-module.exports = Composer.command("admin", async (ctx) => {
+const admin = Composer.command("admin", async (ctx) => {
   try {
     const admin = await checkAdmin(ctx);
     if (!admin) return;
@@ -15,3 +15,5 @@ module.exports = Composer.command("admin", async (ctx) => {
     handleError(err, bot, ctx, "admin");
   }
 });
+
+module.exports = Composer.compose([admin]);

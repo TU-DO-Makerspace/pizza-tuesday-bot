@@ -4,9 +4,9 @@ const { Composer } = require("telegraf");
 // --- helpers
 const checkAndCreateUser = require("../helpers/check-and-create-user");
 const handleError = require("../helpers/errors");
-const { getMenu, generateMenuString } = require("../helpers/menus");
+const { getMenu, generateMenuString } = require("../services/menus");
 
-module.exports = Composer.command("start", async (ctx) => {
+const start = Composer.command("start", async (ctx) => {
   try {
     const user = await checkAndCreateUser(ctx);
     ctx.telegram.sendMessage(
@@ -19,7 +19,7 @@ module.exports = Composer.command("start", async (ctx) => {
   }
 });
 
-module.exports = Composer.command("hunger", async (ctx) => {
+const hunger = Composer.command("hunger", async (ctx) => {
   try {
     const menu = await getMenu();
     if (!menu)
@@ -36,7 +36,7 @@ module.exports = Composer.command("hunger", async (ctx) => {
   }
 });
 
-module.exports = Composer.command("menu", async (ctx) => {
+const menu = Composer.command("menu", async (ctx) => {
   try {
     const menu = await getMenu();
     if (!menu)
@@ -52,3 +52,5 @@ module.exports = Composer.command("menu", async (ctx) => {
     handleError(err, ctx, "menu");
   }
 });
+
+module.exports = Composer.compose([start, hunger, menu]);
