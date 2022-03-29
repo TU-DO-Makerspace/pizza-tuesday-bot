@@ -8,7 +8,7 @@ const getMenu = async () => {
   try {
     const db = getFirestore();
     const collection = db.collection(process.env.FIRESTORE_MENU_COLLECTION);
-    const doc = collection.doc("i7eixbe6fBrliCzYUXGS");
+    const doc = collection.doc("i7eixbe6fBrliCzYUXGS"); // TODO: load menu based on pizza tuesday
 
     const response = await doc.get();
 
