@@ -1,7 +1,8 @@
 // --- imports
 const { getFirestore, Timestamp } = require("firebase-admin/firestore");
+const { adminOrderNotification } = require("./notifications");
 
-const createOrder = async (ctx, order) => {
+const createOrder = async (ctx, order, options) => {
   const db = getFirestore();
 
   const collection = db.collection(process.env.FIRESTORE_ORDER_COLLECTION);
@@ -17,7 +18,8 @@ const createOrder = async (ctx, order) => {
   };
 
   try {
-    return await collection.add(orderObject);
+    await collection.add(orderObject);
+    return await adminOrderNotification(ctx, order, options);
   } catch (err) {
     throw error;
   }
