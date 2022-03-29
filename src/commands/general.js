@@ -1,10 +1,12 @@
 // --- imports
 const { Composer } = require("telegraf");
 
-// --- helpers
-const checkAndCreateUser = require("../helpers/check-and-create-user");
-const handleError = require("../helpers/errors");
+// --- services
+const { checkAndCreateUser } = require("../services/auth");
 const { getMenu, generateMenuString } = require("../services/menus");
+
+// --- helpers
+const handleError = require("../helpers/errors");
 
 const start = Composer.command("start", async (ctx) => {
   try {

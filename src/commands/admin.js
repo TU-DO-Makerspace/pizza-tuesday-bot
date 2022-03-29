@@ -1,8 +1,10 @@
 // --- imports
 const { Composer } = require("telegraf");
 
+// --- services
+const { checkAdmin } = require("../services/auth");
+
 // --- helpers
-const checkAdmin = require("../helpers/check-admin");
 const handleError = require("../helpers/errors");
 
 const admin = Composer.command("admin", async (ctx) => {
