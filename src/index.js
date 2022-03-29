@@ -19,7 +19,7 @@ bot.command("start", async (ctx) => {
       {}
     );
   } catch (err) {
-    handleError(err, bot, ctx);
+    handleError(err, bot, ctx, "start");
   }
 });
 
@@ -37,7 +37,7 @@ bot.command("hunger", async (ctx) => {
       options: menu.options,
     });
   } catch (err) {
-    handleError(err, bot, ctx);
+    handleError(err, bot, ctx, "hunger");
   }
 });
 
@@ -48,7 +48,7 @@ bot.command("admin", async (ctx) => {
 
     bot.telegram.sendMessage(ctx.chat.id, `Du bist ein Admin!`, {});
   } catch (err) {
-    handleError(err, bot, ctx);
+    handleError(err, bot, ctx, "admin");
   }
 });
 
@@ -65,7 +65,7 @@ bot.command("menu", async (ctx) => {
       parse_mode: "MarkdownV2",
     });
   } catch (err) {
-    handleError(err, bot, ctx);
+    handleError(err, bot, ctx, "menu");
   }
 });
 

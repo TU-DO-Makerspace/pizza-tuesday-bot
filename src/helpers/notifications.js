@@ -26,7 +26,27 @@ const adminOrderNotification = async (bot, order, options) => {
   }
 };
 
-const adminErrorNotification = async (bot, error) => {};
+const adminErrorNotification = async (bot, error, command) => {
+  try {
+    const db = getFirestore();
+    const collection = db.collection(process.env.FIRESTORE_ADMIN_COLLECTION);
+
+    const admins = await collection
+      .where("notifications", "array-contains", "errors")
+      .get();
+
+    admins.forEach((doc) => {
+      bot.telegram.sendMessage(
+        doc.id,
+        `Während /${command} ist ein Fehler aufgetreten:`,
+        {}
+      );
+      bot.telegram.sendMessage(doc.id, error.toString(), {});
+    });
+  } catch (err) {
+    throw err;
+  }
+};
 
 module.exports = {
   adminOrderNotification,
