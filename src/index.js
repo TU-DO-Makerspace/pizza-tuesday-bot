@@ -3,6 +3,7 @@ require("dotenv").config();
 const initBot = require("./init-bot");
 // --- helpers
 const checkAndCreateUser = require("./helpers/check-and-create-user");
+const checkAdmin = require("./helpers/check-admin");
 const handleError = require("./helpers/errors");
 // --- initialization
 const bot = initBot();
@@ -24,6 +25,17 @@ bot.command("start", async (ctx) => {
 bot.command("hunger", async (ctx) => {
   try {
     await ctx.scene.enter("ORDER_WIZARD_SCENE_ID");
+  } catch (err) {
+    handleError(err, bot, ctx);
+  }
+});
+
+bot.command("admin", async (ctx) => {
+  try {
+    const admin = await checkAdmin(ctx, bot);
+    if (!admin) return;
+
+    bot.telegram.sendMessage(ctx.chat.id, `Du bist ein Admin!`, {});
   } catch (err) {
     handleError(err, bot, ctx);
   }
