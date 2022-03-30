@@ -3,12 +3,12 @@ const { getFirestore } = require("firebase-admin/firestore");
 // --- helpers
 const { priceFormatter } = require("../helpers/price-formatter");
 
-const getMenu = async () => {
+const getMenu = async (eventId) => {
   try {
     // define document instance
     const db = getFirestore();
     const collection = db.collection(process.env.FIRESTORE_MENU_COLLECTION);
-    const doc = collection.doc("i7eixbe6fBrliCzYUXGS"); // TODO: load menu based on pizza tuesday
+    const doc = collection.doc(eventId);
 
     // run query
     const response = await doc.get();

@@ -4,7 +4,7 @@ const { generateMenuString } = require("../../services/menus");
 const { generateOrderString } = require("../../helpers/generate-order-string");
 
 const menuDisplay = async (ctx) => {
-  const stringPrefix = "Was darf's denn sein? Wir haben heute:";
+  const stringPrefix = "Was darf's denn sein? Wir haben diesmal:";
   const stringSuffix =
     "*0: Bestellvorgang abbrechen*\n\nTippe zum Bestellen einfach die entsprechende Nummer ein\\.";
 
