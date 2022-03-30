@@ -34,7 +34,12 @@ const orderConfirmation = async (ctx) => {
     } und nochmal eine, wenn sie fertig ist.`
   );
 
-  await createOrder(ctx, ctx.session.order, ctx.scene.state.options);
+  await createOrder(
+    ctx,
+    ctx.session.order,
+    ctx.scene.state.options,
+    ctx.scene.state.event
+  );
   return ctx.scene.leave();
 };
 

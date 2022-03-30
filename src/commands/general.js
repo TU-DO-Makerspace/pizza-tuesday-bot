@@ -99,6 +99,7 @@ const hunger = Composer.command("hunger", async (ctx) => {
     // menu is found -> start order wizard
     await ctx.scene.enter("ORDER_WIZARD_SCENE_ID", {
       options: menu.options,
+      event,
     });
   } catch (err) {
     handleError(err, ctx, "hunger");
