@@ -73,6 +73,13 @@ const hunger = Composer.command("hunger", async (ctx) => {
         "Aktuell steht kein nächster Pizza Tuesday an."
       );
 
+    // check if ordering is possible
+    if (!event.orders_open)
+      return await ctx.telegram.sendMessage(
+        ctx.chat.id,
+        "Bestellungen können leider noch nicht aufgegeben werden oder der Bestellzeitraum für diesen Pizza Tuesday ist bereits vorüber."
+      );
+
     // announce date of pizza tuesday
     await ctx.telegram.sendMessage(
       ctx.chat.id,
@@ -80,13 +87,6 @@ const hunger = Composer.command("hunger", async (ctx) => {
         event.date
       )}.`
     );
-
-    // check if ordering is possible
-    if (!event.orders_open)
-      return await ctx.telegram.sendMessage(
-        ctx.chat.id,
-        "Bestellungen können leider noch nicht aufgegeben werden."
-      );
 
     // get menu from database
     const menu = await getMenu(event.id);

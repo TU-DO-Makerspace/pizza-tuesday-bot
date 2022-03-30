@@ -29,9 +29,7 @@ const orderConfirmation = async (ctx) => {
 
   // respond
   await ctx.reply(
-    `Wir legen los! Du bekommst eine Benachrichtigung, sobald deine ${
-      total === 1 ? "Pizza im Ofen ist" : "Pizzen im Ofen sind"
-    } und nochmal eine, wenn sie fertig ist.`
+    `Wir legen los! Du wirst benachrichtigt, wenn sich der Status deiner Bestellung aktualisiert.`
   );
 
   await createOrder(
