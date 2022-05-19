@@ -24,6 +24,7 @@ const start = Composer.command("start", async (ctx) => {
 
 // --- overview over possible commands
 const help = Composer.command("help", async (ctx) => {
+  // TODO
   try {
     return await ctx.telegram.sendMessage(
       ctx.chat.id,
@@ -36,6 +37,7 @@ const help = Composer.command("help", async (ctx) => {
 
 // --- get status of current order
 const status = Composer.command("status", async (ctx) => {
+  // TODO
   try {
     return await ctx.telegram.sendMessage(
       ctx.chat.id,
