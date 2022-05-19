@@ -2,7 +2,7 @@
 import { Composer } from "telegraf";
 // --- services
 import { getUser } from "../services/auth.js";
-import { getQueueLength } from "../services/queue.js";
+import { getQueueLength, getOrdersFromUser } from "../services/queue.js";
 // --- helpers
 import handleError from "../helpers/errors.js";
 
@@ -27,11 +27,12 @@ const help = Composer.command("help", async (ctx) => {
   try {
     return await ctx.telegram.sendMessage(
       ctx.chat.id,
-      `Hallo, Ich bin der Pizza Tuesday Bot\\. \n\n` +
+      `Hallo, Ich bin der Pizza Tuesday Bot\\! \n\n` +
         `Ich kann: \n` +
         `\\- Den *Status deiner Bestellung* anzeigen lassen \\(/status\\) \n` +
         `\\- Die *Länge der Warteschlange* ausgeben \\(/queue\\) \n\n` +
-        `Ich bin aktuell noch in der Beta\\-Phase\\. Mit der Zeit werden Verbesserungen vorgenommen und weitere Features hinzugefügt\\.`,
+        `Ich bin aktuell noch in der Beta\\-Phase\\. Mit der Zeit werden Verbesserungen vorgenommen und weitere Features hinzugefügt\\.\n\n` +
+        `_Bestellungen kannst du bei mir nicht aufgeben\\. Komm dazu bitte persönlich vorbei \\- ist eh viel cooler\\!_`,
       { parse_mode: "MarkdownV2" }
     );
   } catch (err) {
@@ -41,12 +42,30 @@ const help = Composer.command("help", async (ctx) => {
 
 // --- get status of current order
 const status = Composer.command("status", async (ctx) => {
-  // TODO
   try {
-    return await ctx.telegram.sendMessage(
-      ctx.chat.id,
-      `TODO: Send status updates to user`
-    );
+    await getUser(ctx);
+    const orders = await getOrdersFromUser(ctx);
+
+    if (orders === null || orders.length === null) {
+      return await ctx.telegram.sendMessage(
+        ctx.chat.id,
+        `Du hast heute noch keine Bestellungen aufgegeben\\.`,
+        { parse_mode: "MarkdownV2" }
+      );
+    }
+
+    const overview = orders.map((order, index) => {
+      return (
+        `*Bestellung ${index}*:\n` +
+        `*${order.title}*\n` +
+        `${order.status}\n` +
+        `${order.position}\n`
+      );
+    });
+
+    return await ctx.telegram.sendMessage(ctx.chat.id, overview, {
+      parse_mode: "MarkdownV2",
+    });
   } catch (err) {
     handleError(err, ctx, "status");
   }
