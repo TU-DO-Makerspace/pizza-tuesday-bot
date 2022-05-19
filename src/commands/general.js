@@ -24,11 +24,15 @@ const start = Composer.command("start", async (ctx) => {
 
 // --- overview over possible commands
 const help = Composer.command("help", async (ctx) => {
-  // TODO
   try {
     return await ctx.telegram.sendMessage(
       ctx.chat.id,
-      "TODO: Send help to user"
+      `Hallo, Ich bin der Pizza Tuesday Bot\\. \n\n` +
+        `Ich kann: \n` +
+        `\\- Den *Status deiner Bestellung* anzeigen lassen \\(/status\\) \n` +
+        `\\- Die *Länge der Warteschlange* ausgeben \\(/queue\\) \n\n` +
+        `Ich bin aktuell noch in der Beta\\-Phase\\. Mit der Zeit werden Verbesserungen vorgenommen und weitere Features hinzugefügt\\.`,
+      { parse_mode: "MarkdownV2" }
     );
   } catch (err) {
     handleError(err, ctx, "help");
@@ -58,7 +62,7 @@ const queue = Composer.command("queue", async (ctx) => {
       return await ctx.telegram.sendMessage(
         ctx.chat.id,
         `Die Warteschlange ist leer\\!\n\n` +
-          `_\\(Es kann ebenfalls sein, dass heute kein Pizza Tuesday stattfindet, halte in diesem Channel einfach nach einer Ankündigung ausschau: t\\.me/pizzatuesday\\)_`,
+          `\\Es kann sein, dass der Pizza Tuesday noch nicht begonnen hat, oder heute kein Pizza Tuesday stattfindet\\. Halte in diesem Channel einfach nach einer Ankündigung ausschau: t\\.me/pizzatuesday`,
         { parse_mode: "MarkdownV2" }
       );
     }
