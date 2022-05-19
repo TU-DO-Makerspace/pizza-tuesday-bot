@@ -7,10 +7,10 @@ export const checkAdmin = async (ctx) => {
 
   // collection and document references
   const collection = db.collection(process.env.FIRESTORE_ADMIN_COLLECTION);
-  const doc = collection.doc(id.toString());
+  const document = collection.doc(id.toString());
 
   try {
-    const response = await doc.get(); // try reading from database
+    const response = await document.get(); // try reading from database
 
     // document exists
     if (response.exists) {
@@ -24,6 +24,32 @@ export const checkAdmin = async (ctx) => {
       {}
     );
     return false;
+  } catch (err) {
+    throw err;
+  }
+};
+
+// get user data from database or create new user
+export const getUser = async (ctx) => {
+  const db = getFirestore();
+  const userData = ctx.from;
+  const id = userData.id;
+
+  // collection and document references
+  const collection = db.collection(process.env.FIRESTORE_USER_COLLECTION);
+  const document = collection.doc(id.toString());
+
+  try {
+    const response = await document.get(); // try reading from database
+
+    // read userdata if it exists
+    if (response.exists) {
+      return (ctx.user = response.data());
+    }
+
+    // create document if it does not exist
+    const user = await document.set(userData);
+    return (ctx.user = user.data);
   } catch (err) {
     throw err;
   }
