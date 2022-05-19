@@ -13,28 +13,28 @@ const admin = Composer.command("admin", async (ctx) => {
       ctx.chat.id,
       `Hallo, du bist ein Admin\\! \n\n` +
         `Du kannst: \n\n` +
-        `/new\n` +
+        `/new \\[USERNAME\\] \\[BESTELLUNG\\]\n` +
         `\\- Eine *neue Bestellung* aufnehmen\n\n` +
-        `/setpayed /setnotpayed\n` +
+        `/setpayed \\[BESTELL\\_ID\\]\n/setnotpayed \\[BESTELL\\_ID\\]\n` +
         `\\- Eine Bestellung als *bezahlt* oder nicht bezahlt markieren\n\n` +
-        `/setoven /setnotoven\n` +
+        `/setoven \\[BESTELL\\_ID\\]\n/setnotoven \\[BESTELL\\_ID\\]\n` +
         `\\- Eine Bestellung als *im Ofen* oder nicht im Ofen markieren\n\n` +
-        `/setdone /setnotdone\n` +
+        `/setdone \\[BESTELL\\_ID\\]\n/setnotdone \\[BESTELL\\_ID\\]\n` +
         `\\- Eine Bestellung als *fertig* oder nicht fertig markieren\n\n` +
-        `/setpickedup /setnotpickedup\n` +
+        `/setpickedup \\[BESTELL\\_ID\\]\n/setnotpickedup \\[BESTELL\\_ID\\]\n` +
         `\\- Eine Bestellung als *abgeholt* oder nicht abgeholt markieren\n\n` +
-        `/cancel\n` +
+        `/cancel \\[BESTELL\\_ID\\]\n` +
         `\\- Eine Bestellung *abbrechen*\n\n` +
-        `/move\n` +
+        `/move \\[BESTELL\\_ID\\] \\[NEUE\\_POSITION\\]\n` +
         `\\- Eine Bestellung in der Warteschlange *verschieben*\n\n` +
-        `/contact\n` +
+        `/contact \\[USERNAME\\]\n` +
         `\\- Einen *User kontaktieren*\n\n` +
         `/adminqueue\n` +
         `\\- Die komplette *Warteschlange* mit allen Details anzeigen\n\n`,
       { parse_mode: "MarkdownV2" }
     );
   } catch (err) {
-    handleError(err, bot, ctx, "admin");
+    handleError(err, ctx);
   }
 });
 
@@ -48,7 +48,7 @@ const newOrder = Composer.command("new", async (ctx) => {
       {}
     );
   } catch (err) {
-    handleError(err, bot, ctx, "admin");
+    handleError(err, ctx);
   }
 });
 
@@ -62,7 +62,7 @@ const setOrderPayed = Composer.command("setpayed", async (ctx) => {
       {}
     );
   } catch (err) {
-    handleError(err, bot, ctx, "admin");
+    handleError(err, ctx);
   }
 });
 
@@ -76,7 +76,7 @@ const setOrderNotPayed = Composer.command("setnotpayed", async (ctx) => {
       {}
     );
   } catch (err) {
-    handleError(err, bot, ctx, "admin");
+    handleError(err, ctx);
   }
 });
 
@@ -90,7 +90,7 @@ const setOrderProcessing = Composer.command("setoven", async (ctx) => {
       {}
     );
   } catch (err) {
-    handleError(err, bot, ctx, "admin");
+    handleError(err, ctx);
   }
 });
 
@@ -104,7 +104,7 @@ const setOrderNotProcessing = Composer.command("setnotoven", async (ctx) => {
       {}
     );
   } catch (err) {
-    handleError(err, bot, ctx, "admin");
+    handleError(err, ctx);
   }
 });
 
@@ -118,7 +118,7 @@ const setOrderProcessed = Composer.command("setdone", async (ctx) => {
       {}
     );
   } catch (err) {
-    handleError(err, bot, ctx, "admin");
+    handleError(err, ctx);
   }
 });
 
@@ -132,7 +132,7 @@ const setOrderNotProcessed = Composer.command("setnotdone", async (ctx) => {
       {}
     );
   } catch (err) {
-    handleError(err, bot, ctx, "admin");
+    handleError(err, ctx);
   }
 });
 
@@ -146,7 +146,7 @@ const setOrderPickedUp = Composer.command("setpickedup", async (ctx) => {
       {}
     );
   } catch (err) {
-    handleError(err, bot, ctx, "admin");
+    handleError(err, ctx);
   }
 });
 
@@ -160,7 +160,7 @@ const setOrderNotPickedUp = Composer.command("setnotpickedup", async (ctx) => {
       {}
     );
   } catch (err) {
-    handleError(err, bot, ctx, "admin");
+    handleError(err, ctx);
   }
 });
 
@@ -170,7 +170,7 @@ const cancelOrder = Composer.command("cancel", async (ctx) => {
   try {
     ctx.telegram.sendMessage(ctx.chat.id, `TODO: Bestellung abbrechen!`, {});
   } catch (err) {
-    handleError(err, bot, ctx, "admin");
+    handleError(err, ctx);
   }
 });
 
@@ -184,7 +184,7 @@ const showQueue = Composer.command("adminqueue", async (ctx) => {
       {}
     );
   } catch (err) {
-    handleError(err, bot, ctx, "admin");
+    handleError(err, ctx);
   }
 });
 
@@ -194,7 +194,7 @@ const contactUser = Composer.command("contact", async (ctx) => {
   try {
     ctx.telegram.sendMessage(ctx.chat.id, `TODO: User kontaktieren!`, {});
   } catch (err) {
-    handleError(err, bot, ctx, "admin");
+    handleError(err, ctx);
   }
 });
 
@@ -208,7 +208,7 @@ const moveOrder = Composer.command("move", async (ctx) => {
       {}
     );
   } catch (err) {
-    handleError(err, bot, ctx, "admin");
+    handleError(err, ctx);
   }
 });
 

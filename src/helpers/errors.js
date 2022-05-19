@@ -1,4 +1,4 @@
-const handleError = async (err, ctx, command) => {
+const handleError = async (err, ctx) => {
   // log to console
   console.log(err);
 
