@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "pizza-tuesday-bot",
   "version": "1.0.0",
   "description": "Telegram Bot, um das Handling des Pizza Tuesdays zu streamlinen",

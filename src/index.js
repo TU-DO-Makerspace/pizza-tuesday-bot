@@ -1,12 +1,12 @@
 // --- imports
-require("dotenv").config();
-const initBot = require("./init-bot");
-
+import dotenv from "dotenv";
+import initBot from "./init-bot.js";
 // --- commands
-const generalCommands = require("./commands/general");
-const adminCommands = require("./commands/admin");
+import generalCommands from "./commands/general.js";
+import adminCommands from "./commands/admin.js";
 
 // --- initialization
+dotenv.config();
 const bot = initBot();
 
 // --- commands

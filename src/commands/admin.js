@@ -1,21 +1,18 @@
 // --- imports
-const { Composer } = require("telegraf");
-// --- services
-const { checkAdmin } = require("../services/auth");
+import { Composer } from "telegraf";
 // --- helpers
-const handleError = require("../helpers/errors");
+import handleError from "../helpers/errors.js";
+// --- middleware
+import { checkAdmin } from "../services/auth.js";
 
 const admin = Composer.command("admin", async (ctx) => {
-  try {
-    // look up id in admin collection
-    const admin = await checkAdmin(ctx);
-    if (!admin) return; // is not admin
+  if (!(await checkAdmin(ctx))) return;
 
-    // is admin
+  try {
     ctx.telegram.sendMessage(ctx.chat.id, `Du bist ein Admin!`, {});
   } catch (err) {
     handleError(err, bot, ctx, "admin");
   }
 });
 
-module.exports = Composer.compose([admin]);
+export default Composer.compose([admin]);

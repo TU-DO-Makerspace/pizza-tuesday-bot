@@ -1,11 +1,7 @@
 // --- imports
-const { Telegraf, Scenes, session } = require("telegraf");
-const admin = require("firebase-admin");
-const { getFirestore } = require("firebase-admin/firestore");
-require("firebase-admin/firestore");
-
-// --- scenes
-const orderWizard = require("./scenes/order-wizard");
+import { Telegraf } from "telegraf";
+import admin from "firebase-admin";
+import { getFirestore } from "firebase-admin/firestore";
 
 const initBot = () => {
   // init bot
@@ -24,14 +20,9 @@ const initBot = () => {
 
   // init firestore
   getFirestore();
-  console.log("Successfully connected to Firestore Firestore");
-
-  // init bot scenes
-  const stage = new Scenes.Stage([orderWizard]);
-  bot.use(session());
-  bot.use(stage.middleware());
+  console.log("Successfully connected to Firestore");
 
   return bot;
 };
 
-module.exports = initBot;
+export default initBot;
