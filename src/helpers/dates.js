@@ -1,9 +1,12 @@
-const moment = require("moment");
+import moment from "moment";
 
-const timestampToDateString = (timestamp) => {
+export const timestampToDateString = (timestamp) => {
   const tsDate = timestamp.toDate();
   const dateString = moment(tsDate).locale("de").format("dddd, Do MMMM YYYY");
   return dateString;
 };
 
-module.exports = { timestampToDateString };
+export const todayToString = () => {
+  const today = new Date(moment().startOf("day")).getTime().toString();
+  return today;
+};
