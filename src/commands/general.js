@@ -28,9 +28,11 @@ const help = Composer.command("help", async (ctx) => {
     return await ctx.telegram.sendMessage(
       ctx.chat.id,
       `Hallo, Ich bin der Pizza Tuesday Bot\\! \n\n` +
-        `Ich kann: \n` +
-        `\\- Den *Status deiner Bestellung* anzeigen lassen \\(/status\\) \n` +
-        `\\- Die *Länge der Warteschlange* ausgeben \\(/queue\\) \n\n` +
+        `Ich kann: \n\n` +
+        `/status\n` +
+        `\\- Den *Status deiner Bestellung* anzeigen lassen\n\n` +
+        `/queue\n` +
+        `\\- Die *Länge der Warteschlange* ausgeben\n\n` +
         `Ich bin aktuell noch in der Beta\\-Phase\\. Mit der Zeit werden Verbesserungen vorgenommen und weitere Features hinzugefügt\\.\n\n` +
         `_Bestellungen kannst du bei mir nicht aufgeben\\. Komm dazu bitte persönlich vorbei \\- ist eh viel cooler\\!_`,
       { parse_mode: "MarkdownV2" }
