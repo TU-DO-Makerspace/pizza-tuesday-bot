@@ -75,9 +75,11 @@ export const addToQueue = async ({ username, order, payed }) => {
       delivered = data.delivered;
     }
 
+    const formattedUserName = username.replace("@", "").toLowerCase();
+
     const queueObj = {
       id: queue.length + delivered.length + 1,
-      user: username.toLowerCase(),
+      user: formattedUserName,
       order: order,
       status: "pending",
       payed: payed,
@@ -92,6 +94,47 @@ export const addToQueue = async ({ username, order, payed }) => {
     queueObj.position = queue.length;
     queueObj.estimated_duration = queue.length * 7;
     return queueObj;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const updateQueue = async ({ order_id, field, value }) => {
+  const db = getFirestore();
+  const id = todayToString();
+
+  // collection and document references
+  const collection = db.collection(process.env.FIRESTORE_QUEUE_COLLECTION);
+  const document = collection.doc(id);
+
+  try {
+    const response = await document.get(); // try reading from database
+
+    // queue for this day exists -> return length
+    if (!response.exists) {
+      return false;
+    }
+
+    const data = response.data();
+    let queue = data.queue;
+    const delivered = data.delivered;
+
+    const orderIndex = queue.findIndex((obj) => obj.id.toString() === order_id);
+
+    switch (field) {
+      case "status":
+        queue[orderIndex].status = value;
+        break;
+      case "payed":
+        queue[orderIndex].payed = value;
+        break;
+      default:
+        return false;
+    }
+
+    // queue for this day does not exist -> create a new one
+    await document.set({ queue, delivered });
+    return queue[orderIndex];
   } catch (err) {
     throw err;
   }

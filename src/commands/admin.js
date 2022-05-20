@@ -4,8 +4,11 @@ import { Composer } from "telegraf";
 import handleError from "../helpers/errors.js";
 // --- middleware
 import { checkAdmin } from "../services/auth.js";
-import { addToQueue } from "../services/queue.js";
-import { orderCreationNotification } from "../services/user_notifications.js";
+import { addToQueue, updateQueue } from "../services/queue.js";
+import {
+  orderCreationNotification,
+  orderUpdateNotification,
+} from "../services/user_notifications.js";
 
 const admin = Composer.command("admin", async (ctx) => {
   if (!(await checkAdmin(ctx))) return;
@@ -47,12 +50,6 @@ const newOrder = Composer.command("new", async (ctx) => {
   try {
     const [command, username, order, payed] = msg.split(" ");
 
-    const options = {
-      username,
-      order,
-      payed: payed === "true",
-    };
-
     if (!username || !order) {
       return await ctx.telegram.sendMessage(
         ctx.chat.id,
@@ -61,6 +58,12 @@ const newOrder = Composer.command("new", async (ctx) => {
         { parse_mode: "MarkdownV2" }
       );
     }
+
+    const options = {
+      username,
+      order,
+      payed: payed === "true",
+    };
 
     const response = await addToQueue(options);
     await orderCreationNotification({ ctx, username, order: response });
@@ -82,12 +85,47 @@ const newOrder = Composer.command("new", async (ctx) => {
 
 const setOrderPayed = Composer.command("setpayed", async (ctx) => {
   if (!(await checkAdmin(ctx))) return;
+  const msg = ctx.message.text;
 
   try {
-    ctx.telegram.sendMessage(
+    const [command, id] = msg.split(" ");
+
+    if (!id) {
+      return await ctx.telegram.sendMessage(
+        ctx.chat.id,
+        "Bitte gib eine *Bestellnummer* an:\n\n" + "/setpayed \\[NUMMER\\]",
+        { parse_mode: "MarkdownV2" }
+      );
+    }
+
+    const options = {
+      order_id: id,
+      field: "payed",
+      value: true,
+    };
+
+    const response = await updateQueue(options);
+    if (!response) {
+      return await ctx.telegram.sendMessage(
+        ctx.chat.id,
+        `Die Bestellung \\#*${id}* konnte nicht gefunden werden.`,
+        { parse_mode: "MarkdownV2" }
+      );
+    }
+
+    const updateObj = {
+      ctx,
+      order: response,
+      field: "payed",
+      value: true,
+    };
+
+    await orderUpdateNotification(updateObj);
+
+    return await ctx.telegram.sendMessage(
       ctx.chat.id,
-      `TODO: Bestellung als bezahlt markieren!`,
-      {}
+      `Die Bestellung \\#*${id}* wurde als *bezahlt* markiert\\.`,
+      { parse_mode: "MarkdownV2" }
     );
   } catch (err) {
     handleError(err, ctx);
@@ -96,12 +134,47 @@ const setOrderPayed = Composer.command("setpayed", async (ctx) => {
 
 const setOrderNotPayed = Composer.command("setnotpayed", async (ctx) => {
   if (!(await checkAdmin(ctx))) return;
+  const msg = ctx.message.text;
 
   try {
-    ctx.telegram.sendMessage(
+    const [command, id] = msg.split(" ");
+
+    if (!id) {
+      return await ctx.telegram.sendMessage(
+        ctx.chat.id,
+        "Bitte gib eine *Bestellnummer* an:\n\n" + "/setnotpayed \\[NUMMER\\]",
+        { parse_mode: "MarkdownV2" }
+      );
+    }
+
+    const options = {
+      order_id: id,
+      field: "payed",
+      value: false,
+    };
+
+    const response = await updateQueue(options);
+    if (!response) {
+      return await ctx.telegram.sendMessage(
+        ctx.chat.id,
+        `Die Bestellung \\#*${id}* konnte nicht gefunden werden.`,
+        { parse_mode: "MarkdownV2" }
+      );
+    }
+
+    const updateObj = {
+      ctx,
+      order: response,
+      field: "payed",
+      value: false,
+    };
+
+    await orderUpdateNotification(updateObj);
+
+    return await ctx.telegram.sendMessage(
       ctx.chat.id,
-      `TODO: Bestellung als nicht bezahlt markieren!`,
-      {}
+      `Die Bestellung \\#*${id}* wurde als *nicht bezahlt* markiert\\.`,
+      { parse_mode: "MarkdownV2" }
     );
   } catch (err) {
     handleError(err, ctx);
