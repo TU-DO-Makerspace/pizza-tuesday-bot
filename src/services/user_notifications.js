@@ -13,7 +13,7 @@ export const orderCreationNotification = async ({ ctx, username, order }) => {
 
     const chatId = user.id;
     const message =
-      `Hallo ${user.first_name},\ndu hast eine neue Bestellung erhalten:\n\n` +
+      `Hallo ${user.first_name},\ndu hast Bestellung \\#*${order.id}* erhalten:\n\n` +
       `Bestellung: *${order.order}*\n` +
       `Status: *${order.status}*\n` +
       `Position in Warteschlange: *${order.position}*\n` +

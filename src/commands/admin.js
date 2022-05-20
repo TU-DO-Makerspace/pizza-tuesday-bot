@@ -17,17 +17,17 @@ const admin = Composer.command("admin", async (ctx) => {
         `Du kannst: \n\n` +
         `/new \\[USERNAME\\] \\[BESTELLUNG\\]\n` +
         `\\- Eine *neue Bestellung* aufnehmen\n\n` +
-        `/setpayed \\[BESTELL\\_ID\\]\n/setnotpayed \\[BESTELL\\_ID\\]\n` +
+        `/setpayed \\[NUMMER\\]\n/setnotpayed \\[NUMMER\\]\n` +
         `\\- Eine Bestellung als *bezahlt* oder nicht bezahlt markieren\n\n` +
-        `/setoven \\[BESTELL\\_ID\\]\n/setnotoven \\[BESTELL\\_ID\\]\n` +
+        `/setoven \\[NUMMER\\]\n/setnotoven \\[NUMMER\\]\n` +
         `\\- Eine Bestellung als *im Ofen* oder nicht im Ofen markieren\n\n` +
-        `/setdone \\[BESTELL\\_ID\\]\n/setnotdone \\[BESTELL\\_ID\\]\n` +
+        `/setdone \\[NUMMER\\]\n/setnotdone \\[NUMMER\\]\n` +
         `\\- Eine Bestellung als *fertig* oder nicht fertig markieren\n\n` +
-        `/setpickedup \\[BESTELL\\_ID\\]\n/setnotpickedup \\[BESTELL\\_ID\\]\n` +
+        `/setpickedup \\[NUMMER\\]\n/setnotpickedup \\[NUMMER\\]\n` +
         `\\- Eine Bestellung als *abgeholt* oder nicht abgeholt markieren\n\n` +
-        `/cancel \\[BESTELL\\_ID\\]\n` +
+        `/cancel \\[NUMMER\\]\n` +
         `\\- Eine Bestellung *abbrechen*\n\n` +
-        `/move \\[BESTELL\\_ID\\] \\[NEUE\\_POSITION\\]\n` +
+        `/move \\[NUMMER\\] \\[NEUE\\_POSITION\\]\n` +
         `\\- Eine Bestellung in der Warteschlange *verschieben*\n\n` +
         `/contact \\[USERNAME\\]\n` +
         `\\- Einen *User kontaktieren*\n\n` +
@@ -67,7 +67,7 @@ const newOrder = Composer.command("new", async (ctx) => {
 
     return await ctx.telegram.sendMessage(
       ctx.chat.id,
-      `Bestellung wurde aufgenommen:\n\n` +
+      `Bestellung \\#*${response.id}* wurde aufgenommen:\n\n` +
         `Username: *${response.user}*\n` +
         `Bestellung: *${response.order}*\n` +
         `Bezahlt: *${response.payed ? "Bezahlt" : "Nicht bezahlt"}*\n` +

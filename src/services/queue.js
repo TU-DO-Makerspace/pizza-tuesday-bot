@@ -64,13 +64,6 @@ export const addToQueue = async ({ username, order, payed }) => {
   const document = collection.doc(id);
 
   try {
-    const queueObj = {
-      user: username,
-      order: order,
-      status: "pending",
-      payed: payed,
-    };
-
     let queue = [];
     let delivered = [];
     const response = await document.get(); // try reading from database
@@ -81,6 +74,14 @@ export const addToQueue = async ({ username, order, payed }) => {
       if (data.queue) queue = data.queue;
       delivered = data.delivered;
     }
+
+    const queueObj = {
+      id: queue.length + delivered.length + 1,
+      user: username,
+      order: order,
+      status: "pending",
+      payed: payed,
+    };
 
     queue.push(queueObj);
 
