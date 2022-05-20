@@ -45,7 +45,7 @@ export const orderUpdateNotification = async ({ ctx, order, field, value }) => {
     message =
       `Hallo ${user.first_name},\ndeine Bestellung \\#*${order.id}* wurde aktualisiert:\n\n` +
       `Bestellung: *${order.order}*\n` +
-      `Status: *${order.status}*`;
+      `Status: *${value}*`;
 
     if (field === "payed") {
       message =

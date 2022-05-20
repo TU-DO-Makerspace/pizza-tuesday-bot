@@ -108,7 +108,7 @@ const setOrderPayed = Composer.command("setpayed", async (ctx) => {
     if (!response) {
       return await ctx.telegram.sendMessage(
         ctx.chat.id,
-        `Die Bestellung \\#*${id}* konnte nicht gefunden werden.`,
+        `Die Bestellung \\#*${id}* konnte nicht gefunden werden\\.`,
         { parse_mode: "MarkdownV2" }
       );
     }
@@ -157,7 +157,7 @@ const setOrderNotPayed = Composer.command("setnotpayed", async (ctx) => {
     if (!response) {
       return await ctx.telegram.sendMessage(
         ctx.chat.id,
-        `Die Bestellung \\#*${id}* konnte nicht gefunden werden.`,
+        `Die Bestellung \\#*${id}* konnte nicht gefunden werden\\.`,
         { parse_mode: "MarkdownV2" }
       );
     }
@@ -181,28 +181,98 @@ const setOrderNotPayed = Composer.command("setnotpayed", async (ctx) => {
   }
 });
 
-const setOrderProcessing = Composer.command("setoven", async (ctx) => {
+const setOrderPending = Composer.command("setpending", async (ctx) => {
   if (!(await checkAdmin(ctx))) return;
+  const msg = ctx.message.text;
 
   try {
-    ctx.telegram.sendMessage(
+    const [command, id] = msg.split(" ");
+
+    if (!id) {
+      return await ctx.telegram.sendMessage(
+        ctx.chat.id,
+        "Bitte gib eine *Bestellnummer* an:\n\n" + "/setpending \\[NUMMER\\]",
+        { parse_mode: "MarkdownV2" }
+      );
+    }
+
+    const options = {
+      order_id: id,
+      field: "status",
+      value: "pending",
+    };
+
+    const response = await updateQueue(options);
+    if (!response) {
+      return await ctx.telegram.sendMessage(
+        ctx.chat.id,
+        `Die Bestellung \\#*${id}* konnte nicht gefunden werden\\.`,
+        { parse_mode: "MarkdownV2" }
+      );
+    }
+
+    const updateObj = {
+      ctx,
+      order: response,
+      field: "status",
+      value: "in Warteschlange",
+    };
+
+    await orderUpdateNotification(updateObj);
+
+    return await ctx.telegram.sendMessage(
       ctx.chat.id,
-      `TODO: Bestellung als im Ofen markieren!`,
-      {}
+      `Der Status der Bestellung \\#*${id}* wurde auf *in Warteschlange* gesetzt\\.`,
+      { parse_mode: "MarkdownV2" }
     );
   } catch (err) {
     handleError(err, ctx);
   }
 });
 
-const setOrderNotProcessing = Composer.command("setnotoven", async (ctx) => {
+const setOrderProcessing = Composer.command("setoven", async (ctx) => {
   if (!(await checkAdmin(ctx))) return;
+  const msg = ctx.message.text;
 
   try {
-    ctx.telegram.sendMessage(
+    const [command, id] = msg.split(" ");
+
+    if (!id) {
+      return await ctx.telegram.sendMessage(
+        ctx.chat.id,
+        "Bitte gib eine *Bestellnummer* an:\n\n" + "/setoven \\[NUMMER\\]",
+        { parse_mode: "MarkdownV2" }
+      );
+    }
+
+    const options = {
+      order_id: id,
+      field: "status",
+      value: "processing",
+    };
+
+    const response = await updateQueue(options);
+    if (!response) {
+      return await ctx.telegram.sendMessage(
+        ctx.chat.id,
+        `Die Bestellung \\#*${id}* konnte nicht gefunden werden\\.`,
+        { parse_mode: "MarkdownV2" }
+      );
+    }
+
+    const updateObj = {
+      ctx,
+      order: response,
+      field: "status",
+      value: "im Ofen",
+    };
+
+    await orderUpdateNotification(updateObj);
+
+    return await ctx.telegram.sendMessage(
       ctx.chat.id,
-      `TODO: Bestellung als nicht im Ofen markieren!`,
-      {}
+      `Der Status der Bestellung \\#*${id}* wurde auf *im Ofen* gesetzt\\.`,
+      { parse_mode: "MarkdownV2" }
     );
   } catch (err) {
     handleError(err, ctx);
@@ -211,26 +281,47 @@ const setOrderNotProcessing = Composer.command("setnotoven", async (ctx) => {
 
 const setOrderProcessed = Composer.command("setdone", async (ctx) => {
   if (!(await checkAdmin(ctx))) return;
+  const msg = ctx.message.text;
 
   try {
-    ctx.telegram.sendMessage(
-      ctx.chat.id,
-      `TODO: Bestellung als fertig markieren!`,
-      {}
-    );
-  } catch (err) {
-    handleError(err, ctx);
-  }
-});
+    const [command, id] = msg.split(" ");
 
-const setOrderNotProcessed = Composer.command("setnotdone", async (ctx) => {
-  if (!(await checkAdmin(ctx))) return;
+    if (!id) {
+      return await ctx.telegram.sendMessage(
+        ctx.chat.id,
+        "Bitte gib eine *Bestellnummer* an:\n\n" + "/setdone \\[NUMMER\\]",
+        { parse_mode: "MarkdownV2" }
+      );
+    }
 
-  try {
-    ctx.telegram.sendMessage(
+    const options = {
+      order_id: id,
+      field: "status",
+      value: "done",
+    };
+
+    const response = await updateQueue(options);
+    if (!response) {
+      return await ctx.telegram.sendMessage(
+        ctx.chat.id,
+        `Die Bestellung \\#*${id}* konnte nicht gefunden werden\\.`,
+        { parse_mode: "MarkdownV2" }
+      );
+    }
+
+    const updateObj = {
+      ctx,
+      order: response,
+      field: "status",
+      value: "Abholbereit",
+    };
+
+    await orderUpdateNotification(updateObj);
+
+    return await ctx.telegram.sendMessage(
       ctx.chat.id,
-      `TODO: Bestellung als nicht fertig markieren!`,
-      {}
+      `Der Status der Bestellung \\#*${id}* wurde auf *Abholbereit* gesetzt\\.`,
+      { parse_mode: "MarkdownV2" }
     );
   } catch (err) {
     handleError(err, ctx);
@@ -239,26 +330,47 @@ const setOrderNotProcessed = Composer.command("setnotdone", async (ctx) => {
 
 const setOrderPickedUp = Composer.command("setpickedup", async (ctx) => {
   if (!(await checkAdmin(ctx))) return;
+  const msg = ctx.message.text;
 
   try {
-    ctx.telegram.sendMessage(
-      ctx.chat.id,
-      `TODO: Bestellung als abgeholt markieren!`,
-      {}
-    );
-  } catch (err) {
-    handleError(err, ctx);
-  }
-});
+    const [command, id] = msg.split(" ");
 
-const setOrderNotPickedUp = Composer.command("setnotpickedup", async (ctx) => {
-  if (!(await checkAdmin(ctx))) return;
+    if (!id) {
+      return await ctx.telegram.sendMessage(
+        ctx.chat.id,
+        "Bitte gib eine *Bestellnummer* an:\n\n" + "/setpickedup \\[NUMMER\\]",
+        { parse_mode: "MarkdownV2" }
+      );
+    }
 
-  try {
-    ctx.telegram.sendMessage(
+    const options = {
+      order_id: id,
+      field: "status",
+      value: "delivered",
+    };
+
+    const response = await updateQueue(options);
+    if (!response) {
+      return await ctx.telegram.sendMessage(
+        ctx.chat.id,
+        `Die Bestellung \\#*${id}* konnte nicht gefunden werden\\.`,
+        { parse_mode: "MarkdownV2" }
+      );
+    }
+
+    const updateObj = {
+      ctx,
+      order: response,
+      field: "status",
+      value: "Abgeholt",
+    };
+
+    await orderUpdateNotification(updateObj);
+
+    return await ctx.telegram.sendMessage(
       ctx.chat.id,
-      `TODO: Bestellung als nicht abgeholt markieren!`,
-      {}
+      `Der Status der Bestellung \\#*${id}* wurde auf *Abgeholt* gesetzt\\.`,
+      { parse_mode: "MarkdownV2" }
     );
   } catch (err) {
     handleError(err, ctx);
@@ -318,12 +430,10 @@ export default Composer.compose([
   newOrder,
   setOrderPayed,
   setOrderNotPayed,
+  setOrderPending,
   setOrderProcessing,
-  setOrderNotProcessing,
   setOrderProcessed,
-  setOrderNotProcessed,
   setOrderPickedUp,
-  setOrderNotPickedUp,
   cancelOrder,
   showQueue,
   contactUser,

@@ -117,13 +117,19 @@ export const updateQueue = async ({ order_id, field, value }) => {
 
     const data = response.data();
     let queue = data.queue;
-    const delivered = data.delivered;
+    let delivered = data.delivered;
 
     const orderIndex = queue.findIndex((obj) => obj.id.toString() === order_id);
 
     switch (field) {
       case "status":
-        queue[orderIndex].status = value;
+        if (value === "delivered") {
+          queue[orderIndex].status = value;
+          delivered.push(queue[orderIndex]);
+          queue.splice(orderIndex, 1);
+        } else {
+          queue[orderIndex].status = value;
+        }
         break;
       case "payed":
         queue[orderIndex].payed = value;
@@ -134,6 +140,9 @@ export const updateQueue = async ({ order_id, field, value }) => {
 
     // queue for this day does not exist -> create a new one
     await document.set({ queue, delivered });
+    if (value === "delivered") {
+      return delivered[delivered.length - 1];
+    }
     return queue[orderIndex];
   } catch (err) {
     throw err;
