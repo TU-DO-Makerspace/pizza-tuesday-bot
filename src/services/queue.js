@@ -77,7 +77,7 @@ export const addToQueue = async ({ username, order, payed }) => {
 
     const queueObj = {
       id: queue.length + delivered.length + 1,
-      user: username,
+      user: username.toLowerCase(),
       order: order,
       status: "pending",
       payed: payed,

@@ -48,8 +48,9 @@ export const getUser = async (ctx) => {
     }
 
     // create document if it does not exist
+    userData.username = userData.username.toLowerCase();
     const user = await document.set(userData);
-    return (ctx.user = user.data);
+    return (ctx.user = userData);
   } catch (err) {
     throw err;
   }

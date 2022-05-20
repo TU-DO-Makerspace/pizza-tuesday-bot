@@ -2,7 +2,8 @@ import { getUserByUsername } from "./auth.js";
 
 export const orderCreationNotification = async ({ ctx, username, order }) => {
   try {
-    const user = await getUserByUsername(username);
+    const formattedUserName = username.replace("@", "").toLowerCase();
+    const user = await getUserByUsername(formattedUserName);
 
     if (!user) {
       return await ctx.telegram.sendMessage(
