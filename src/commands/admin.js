@@ -22,12 +22,14 @@ const admin = Composer.command("admin", async (ctx) => {
         `\\- Eine *neue Bestellung* aufnehmen\n\n` +
         `/setpayed \\[NUMMER\\]\n/setnotpayed \\[NUMMER\\]\n` +
         `\\- Eine Bestellung als *bezahlt* oder nicht bezahlt markieren\n\n` +
-        `/setoven \\[NUMMER\\]\n/setnotoven \\[NUMMER\\]\n` +
-        `\\- Eine Bestellung als *im Ofen* oder nicht im Ofen markieren\n\n` +
-        `/setdone \\[NUMMER\\]\n/setnotdone \\[NUMMER\\]\n` +
-        `\\- Eine Bestellung als *fertig* oder nicht fertig markieren\n\n` +
-        `/setpickedup \\[NUMMER\\]\n/setnotpickedup \\[NUMMER\\]\n` +
-        `\\- Eine Bestellung als *abgeholt* oder nicht abgeholt markieren\n\n` +
+        `/setpending \\[NUMMER\\]\n` +
+        `\\- Bestellstatus auf *in Warteschlange* setzen\n\n` +
+        `/setoven \\[NUMMER\\]\n` +
+        `\\- Bestellstatus auf *im Ofen* setzen\n\n` +
+        `/setdone \\[NUMMER\\]\n` +
+        `\\- Bestellstatus auf *Abholbereit* setzen\n\n` +
+        `/setpickedup \\[NUMMER\\]\n` +
+        `\\- Bestellstatus auf *Abgeholt* setzen\n\n` +
         `/cancel \\[NUMMER\\]\n` +
         `\\- Eine Bestellung *abbrechen*\n\n` +
         `/move \\[NUMMER\\] \\[NEUE\\_POSITION\\]\n` +
