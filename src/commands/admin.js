@@ -4,6 +4,8 @@ import { Composer } from "telegraf";
 import handleError from "../helpers/errors.js";
 // --- middleware
 import { checkAdmin } from "../services/auth.js";
+import { addToQueue } from "../services/queue.js";
+import { orderCreationNotification } from "../services/user_notifications.js";
 
 const admin = Composer.command("admin", async (ctx) => {
   if (!(await checkAdmin(ctx))) return;
@@ -40,12 +42,38 @@ const admin = Composer.command("admin", async (ctx) => {
 
 const newOrder = Composer.command("new", async (ctx) => {
   if (!(await checkAdmin(ctx))) return;
+  const msg = ctx.message.text;
 
   try {
-    ctx.telegram.sendMessage(
+    const [command, username, order, payed] = msg.split(" ");
+
+    const options = {
+      username,
+      order,
+      payed: payed === "true",
+    };
+
+    if (!username || !order) {
+      return await ctx.telegram.sendMessage(
+        ctx.chat.id,
+        "Bitte gib einen *Usernamen* und eine *Bestellung* an:\n\n" +
+          "/new \\[USERNAME\\] \\[BESTELLUNG\\] \\[BEZAHLT \\(true\\/false\\)\\]",
+        { parse_mode: "MarkdownV2" }
+      );
+    }
+
+    const response = await addToQueue(options);
+    await orderCreationNotification({ ctx, username, order: response });
+
+    return await ctx.telegram.sendMessage(
       ctx.chat.id,
-      `TODO: neue Bestellung aufnehmen!`,
-      {}
+      `Bestellung wurde aufgenommen:\n\n` +
+        `Username: *${response.user}*\n` +
+        `Bestellung: *${response.order}*\n` +
+        `Bezahlt: *${response.payed ? "Bezahlt" : "Nicht bezahlt"}*\n` +
+        `Position in Warteschlange: *${response.position}*\n` +
+        `Geschätzte Dauer: *${response.estimated_duration} Minuten*`,
+      { parse_mode: "MarkdownV2" }
     );
   } catch (err) {
     handleError(err, ctx);

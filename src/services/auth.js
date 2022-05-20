@@ -54,3 +54,25 @@ export const getUser = async (ctx) => {
     throw err;
   }
 };
+
+// get user data from id
+export const getUserByUsername = async (username) => {
+  const db = getFirestore();
+
+  // collection and document references
+  const collection = db.collection(process.env.FIRESTORE_USER_COLLECTION);
+  const document = collection.where("username", "==", username);
+
+  try {
+    const response = await document.get(); // try reading from database
+
+    // read userdata if it exists
+    if (response.empty) {
+      return null;
+    }
+
+    return response.docs[0].data();
+  } catch (err) {
+    throw err;
+  }
+};
